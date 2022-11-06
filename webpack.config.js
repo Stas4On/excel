@@ -61,22 +61,16 @@ module.exports = {
         },
       ],
     }),
-    new MiniCssExtractPlugin({
+    ...(isDev ? [] : new MiniCssExtractPlugin({
       filename: fileName('css'),
-    }),
+    })),
   ],
   module: {
     rules: [
       {
         test: /\.s[ac]ss$/i,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: isDev,
-              reloadAll: true,
-            },
-          },
+          isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
           'sass-loader',
         ],
